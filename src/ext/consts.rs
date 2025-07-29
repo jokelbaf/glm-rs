@@ -21,9 +21,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-use basenum::BaseFloat;
-use traits::GenFloat;
-use vec::traits::GenFloatVec;
+use crate::basenum::BaseFloat;
+use crate::traits::GenFloat;
+use crate::vec::traits::GenFloatVec;
 
 pub trait Consts<T: BaseFloat>: GenFloat<T> {
     fn pi() -> Self;

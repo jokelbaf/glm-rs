@@ -21,28 +21,24 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-use basenum::{ BaseFloat, ApproxEq };
-use vec::traits::GenFloatVec;
-use std::ops::{ Add, Sub, Neg, Mul, Div, Rem, Index, IndexMut };
-use num::{ One, Zero };
+use crate::basenum::{ApproxEq, BaseFloat};
+use crate::vec::traits::GenFloatVec;
+use num::{One, Zero};
+use std::ops::{Add, Div, Index, IndexMut, Mul, Neg, Rem, Sub};
 
 /// Generic Matrix type.
-pub trait GenMat
-<
-T: BaseFloat,
-C: GenFloatVec<T>
->
-: Sized
-+ Zero
-+ Add<Output = Self>
-+ Sub<Output = Self>
-+ Div<Output = Self>
-+ Rem<Output = Self>
-+ Neg<Output = Self>
-+ Mul<T, Output = Self>
-+ Index<usize, Output = C>
-+ IndexMut<usize>
-+ ApproxEq<BaseType = T>
+pub trait GenMat<T: BaseFloat, C: GenFloatVec<T>>:
+    Sized
+    + Zero
+    + Add<Output = Self>
+    + Sub<Output = Self>
+    + Div<Output = Self>
+    + Rem<Output = Self>
+    + Neg<Output = Self>
+    + Mul<T, Output = Self>
+    + Index<usize, Output = C>
+    + IndexMut<usize>
+    + ApproxEq<BaseType = T>
 {
     /// Type of row vectors.
     type R: GenFloatVec<T>;
@@ -78,13 +74,8 @@ C: GenFloatVec<T>
 }
 
 /// Generic type of square matrix.
-pub trait GenSquareMat
-<
-T: BaseFloat,
-C: GenFloatVec<T>,
->
-: GenMat<T, C, R = C, Transpose = Self>
-+ One
+pub trait GenSquareMat<T: BaseFloat, C: GenFloatVec<T>>:
+    GenMat<T, C, R = C, Transpose = Self> + One
 {
     /// Returns the determinant of a square matrix.
     ///

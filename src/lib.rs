@@ -123,64 +123,47 @@
 //!   keyword.
 //!
 
-extern crate rand;
 extern crate num;
 extern crate quickcheck;
+extern crate rand;
 
 pub use builtin::*;
 
-pub use basenum::{
-    Primitive, BaseNum, BaseInt, BaseFloat, SignedNum,
-    ApproxEq, is_approx_eq, is_close_to
+pub use crate::basenum::{
+    ApproxEq, BaseFloat, BaseInt, BaseNum, Primitive, SignedNum, is_approx_eq, is_close_to,
 };
 
-pub use traits::{
-    GenNum, GenInt, GenFloat
+pub use crate::traits::{GenFloat, GenInt, GenNum};
+
+pub use crate::vec::traits::{GenBVec, GenFloatVec, GenNumVec, GenVec};
+
+pub use crate::vec::vec::{
+    BVec2, BVec3, BVec4, DVec2, DVec3, DVec4, IVec2, IVec3, IVec4, UVec2, UVec3, UVec4, Vec2, Vec3,
+    Vec4, Vector2, Vector3, Vector4, bvec2, bvec3, bvec4, dvec2, dvec3, dvec4, ivec2, ivec3, ivec4,
+    uvec2, uvec3, uvec4, vec2, vec3, vec4,
 };
 
-pub use vec::traits::{
-    GenVec, GenNumVec, GenFloatVec, GenBVec,
-};
-
-pub use vec::vec::{
-    Vector2, Vector3, Vector4,
-    BVec2, BVec3, BVec4, bvec2, bvec3, bvec4,
-    IVec2, IVec3, IVec4, ivec2, ivec3, ivec4,
-    UVec2, UVec3, UVec4, uvec2, uvec3, uvec4,
-    Vec2, Vec3, Vec4, vec2, vec3, vec4,
-    DVec2, DVec3, DVec4, dvec2, dvec3, dvec4,
-};
-
-// pub use vec::swizzle::{
+// pub use crate::vec::swizzle::{
 //     Swizzle2, Swizzle3, Swizzle4,
 // };
 
-pub use mat::traits::{ GenMat, GenSquareMat };
+pub use crate::mat::traits::{GenMat, GenSquareMat};
 
-pub use mat::mat::{
-    Matrix2, Matrix3, Matrix4,
-    Matrix3x2, Matrix4x2, Matrix2x3, Matrix4x3, Matrix2x4, Matrix3x4,
-    Mat2, Mat3, Mat4,
-    Mat3x2, Mat2x3, Mat4x2, Mat2x4, Mat4x3, Mat3x4,
-    DMat2, DMat3, DMat4,
-    DMat3x2, DMat2x3, DMat4x2, DMat2x4, DMat4x3, DMat3x4,
+pub use crate::mat::mat::{
+    DMat2, DMat2x3, DMat2x4, DMat3, DMat3x2, DMat3x4, DMat4, DMat4x2, DMat4x3, Mat2, Mat2x3,
+    Mat2x4, Mat3, Mat3x2, Mat3x4, Mat4, Mat4x2, Mat4x3, Matrix2, Matrix2x3, Matrix2x4, Matrix3,
+    Matrix3x2, Matrix3x4, Matrix4, Matrix4x2, Matrix4x3,
 };
 
-pub use mat::ctor::{
-    mat2, mat3, mat4,
-    mat3x2, mat2x3, mat4x2, mat2x4, mat4x3, mat3x4,
-    dmat2, dmat3, dmat4,
-    dmat3x2, dmat2x3, dmat4x2, dmat2x4, dmat4x3, dmat3x4,
+pub use crate::mat::ctor::{
+    dmat2, dmat2x3, dmat2x4, dmat3, dmat3x2, dmat3x4, dmat4, dmat4x2, dmat4x3, mat2, mat2x3,
+    mat2x4, mat3, mat3x2, mat3x4, mat4, mat4x2, mat4x3,
 };
 
-pub use cast::{
-    PrimCast,
-    int, uint, float, double, boolean,
-    to_ivec2, to_ivec3, to_ivec4,
-    to_uvec2, to_uvec3, to_uvec4,
-    to_vec2, to_vec3, to_vec4,
-    to_dvec2, to_dvec3, to_dvec4,
-    to_bvec2, to_bvec3, to_bvec4
+pub use crate::cast::{
+    PrimCast, boolean, double, float, int, to_bvec2, to_bvec3, to_bvec4, to_dvec2, to_dvec3,
+    to_dvec4, to_ivec2, to_ivec3, to_ivec4, to_uvec2, to_uvec3, to_uvec4, to_vec2, to_vec3,
+    to_vec4, uint,
 };
 
 #[macro_use]
@@ -191,10 +174,10 @@ mod vec {
     pub mod vec;
 }
 mod mat {
-    pub mod traits;
-    pub mod mat;
     pub mod ctor;
+    pub mod mat;
     pub mod sqmat;
+    pub mod traits;
 }
 mod cast;
 

@@ -27,61 +27,43 @@
 //!
 
 pub use self::trig::{
-    radians, degrees,
-    sin, cos, tan, asin, acos, atan2, atan,
-    sinh, cosh, tanh, asinh, acosh, atanh,
+    acos, acosh, asin, asinh, atan, atan2, atanh, cos, cosh, degrees, radians, sin, sinh, tan, tanh,
 };
 
-pub use self::exp::{
-    pow, exp, log, exp2, log2, sqrt, inversesqrt
-};
+pub use self::exp::{exp, exp2, inversesqrt, log, log2, pow, sqrt};
 
 pub use self::common::{
-    abs, sign,
-    floor, trunc, round, roundEven, ceil, fract, fmod, mod_s, modf,
-    min, min_s, max, max_s, clamp, clamp_s,
-    mix, mix_s, mix_bool, step, step_s, smoothstep, smoothstep_s,
-    isnan, isinf,
-    floatBitsToInt, floatBitsToUint, intBitsToFloat, uintBitsToFloat,
-    fma,
-    frexp, ldexp,
+    abs, ceil, clamp, clamp_s, floatBitsToInt, floatBitsToUint, floor, fma, fmod, fract, frexp,
+    intBitsToFloat, isinf, isnan, ldexp, max, max_s, min, min_s, mix, mix_bool, mix_s, mod_s, modf,
+    round, roundEven, sign, smoothstep, smoothstep_s, step, step_s, trunc, uintBitsToFloat,
 };
 
 pub use self::pack::{
-    packUnorm2x16, packUnorm4x8, packSnorm2x16, packSnorm4x8,
-    unpackUnorm2x16, unpackUnorm4x8, unpackSnorm2x16, unpackSnorm4x8,
-    packDouble2x32, unpackDouble2x32,
+    packDouble2x32, packSnorm2x16, packSnorm4x8, packUnorm2x16, packUnorm4x8, unpackDouble2x32,
+    unpackSnorm2x16, unpackSnorm4x8, unpackUnorm2x16, unpackUnorm4x8,
 };
 
-pub use self::geom::{
-    dot, length, distance, normalize, faceforward, reflect, refract, cross,
-};
+pub use self::geom::{cross, distance, dot, faceforward, length, normalize, reflect, refract};
 
-pub use self::matrix::{
-    matrixCompMult, outerProduct, transpose, determinant, inverse,
-};
+pub use self::matrix::{determinant, inverse, matrixCompMult, outerProduct, transpose};
 
 pub use self::vecrel::{
-    lessThan, lessThanEqual, greaterThan, greaterThanEqual, equal, notEqual,
-    all, any, not,
+    all, any, equal, greaterThan, greaterThanEqual, lessThan, lessThanEqual, not, notEqual,
 };
 
 pub use self::integer::{
-    uaddCarry, usubBorrow, umulExtended, imulExtended,
-    bitfieldExtract, bitfieldInsert, bitfieldReverse, bitCount,
-    findLSB, findMSB,
+    bitCount, bitfieldExtract, bitfieldInsert, bitfieldReverse, findLSB, findMSB, imulExtended,
+    uaddCarry, umulExtended, usubBorrow,
 };
 
-pub use self::noise::{
-    noise1, noise2, noise3, noise4,
-};
+pub use self::noise::{noise1, noise2, noise3, noise4};
 
-mod trig;
-mod exp;
 mod common;
-mod pack;
+mod exp;
 mod geom;
-mod matrix;
-mod vecrel;
 mod integer;
+mod matrix;
 mod noise;
+mod pack;
+mod trig;
+mod vecrel;

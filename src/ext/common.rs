@@ -21,8 +21,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-use basenum::BaseFloat;
-use traits::GenFloat;
+use crate::basenum::BaseFloat;
+use crate::traits::GenFloat;
 use num::Float;
 
 /// Returns the reciprocal (inverse) of float number `x`.

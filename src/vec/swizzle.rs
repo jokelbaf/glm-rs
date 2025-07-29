@@ -21,7 +21,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-use basenum::Primitive;
+use crate::basenum::Primitive;
 use super::vec::{ Vector2, Vector3, Vector4 };
 
 macro_rules! def_swizzle2 {
@@ -131,7 +131,7 @@ impl<T: Primitive> Swizzle4<T> for Vector4<T> {
 #[cfg(test)]
 mod test {
 
-    use vec::vec::*;
+    use crate::vec::vec::*;
     use super::*;
 
     #[test]

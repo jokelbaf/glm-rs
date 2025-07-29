@@ -21,8 +21,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-use basenum::{ BaseNum, BaseFloat };
-use traits::{ GenNum, GenFloat };
+use crate::basenum::{BaseFloat, BaseNum};
+use crate::traits::{GenFloat, GenNum};
 use num::Float;
 
 /// Returns the cubic root.
@@ -46,7 +46,5 @@ pub fn pow3<N: BaseNum, T: GenNum<N>>(x: T) -> T {
 /// Raise a number to an integer power.
 #[inline(always)]
 pub fn powi<F: BaseFloat, T: GenFloat<F>>(x: T, y: i32) -> T {
-    x.map(|f| -> F {
-        Float::powi(f, y)
-    })
+    x.map(|f| -> F { Float::powi(f, y) })
 }

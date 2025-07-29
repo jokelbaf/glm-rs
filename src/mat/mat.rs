@@ -21,14 +21,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-use GenMat;
+use crate::GenMat;
 
-use vec::vec::{Vector2, Vector3, Vector4};
+use crate::vec::vec::{Vector2, Vector3, Vector4};
 
 use std::mem;
 use std::ops::{Add, Div, Index, IndexMut, Mul, Neg, Rem, Sub};
 
-use basenum::{ApproxEq, BaseFloat};
+use crate::basenum::{ApproxEq, BaseFloat};
 use num::Zero;
 #[cfg(test)]
 use quickcheck::{Arbitrary, Gen};
@@ -314,7 +314,7 @@ macro_rules! impl_matrix {
             impl<T: BaseFloat> Rand for $t<T> {
                 #[inline]
                 fn rand<R: Rng>(rng: &mut R) -> $t<T> {
-                    $t {$($field: rng.gen()),+}
+                    $t {$($field: rng.r#gen()),+}
                 }
             }
             #[cfg(test)]
@@ -722,8 +722,8 @@ impl<T: BaseFloat> Matrix4<T> {
 #[cfg(test)]
 mod test {
 
-    use mat::ctor::*;
-    use vec::vec::*;
+    use crate::mat::ctor::*;
+    use crate::vec::vec::*;
 
     use crate::is_close_to;
 

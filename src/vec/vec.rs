@@ -22,7 +22,8 @@
 // THE SOFTWARE.
 
 use super::traits::{GenBVec, GenFloatVec, GenNumVec, GenVec};
-use basenum::*;
+use crate::basenum::*;
+use crate::traits::*;
 use num::{Float, One, Zero};
 use quickcheck::{Arbitrary, Gen};
 use rand::{Rand, Rng};
@@ -31,7 +32,6 @@ use std::mem;
 use std::ops::{
     Add, BitAnd, BitOr, BitXor, Div, Index, IndexMut, Mul, Neg, Not, Rem, Shl, Shr, Sub,
 };
-use traits::*;
 
 // copied from `cgmath-rs/src/vector.rs`.
 macro_rules! fold(
@@ -103,13 +103,16 @@ macro_rules! def_genvec(
         impl<T: Primitive> Rand for $t<T> {
             #[inline]
             fn rand<R: Rng>(rng: &mut R) -> $t<T> {
-                $t {$($field: rng.gen()),+}
+                $t {$($field: rng.r#gen()),+}
             }
         }
         impl<T: Primitive + Arbitrary> Arbitrary for $t<T> {
             fn arbitrary<G: Gen>(g: &mut G) -> $t<T> {
-                // do not use `g.size()`.
-                g.gen()
+                $t {
+                    $(
+                        $field: T::arbitrary(g),
+                    )+
+                }
             }
         }
         impl Eq for $t<bool> {}

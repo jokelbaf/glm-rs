@@ -23,8 +23,8 @@
 
 // The GLSL Specification, ch 8.4, Floating-Point Pack and Unpack Functions.
 
-use vec::vec::*;
-use super::common::{ clamp_s, round };
+use super::common::{clamp_s, round};
+use crate::vec::vec::*;
 use std::mem;
 
 /// First, converts each component of the normalized floating-point value `v`
@@ -122,13 +122,12 @@ pub fn packUnorm4x8(v: Vec4) -> u32 {
 #[allow(non_snake_case)]
 pub fn unpackUnorm4x8(p: u32) -> Vec4 {
     let unpack: &[u8; 4] = unsafe { mem::transmute(&p) };
-    let v =
-        vec4(
-            unpack[3] as f32,
-            unpack[2] as f32,
-            unpack[1] as f32,
-            unpack[0] as f32
-        );
+    let v = vec4(
+        unpack[3] as f32,
+        unpack[2] as f32,
+        unpack[1] as f32,
+        unpack[0] as f32,
+    );
     // v / 255.
     v * 0.0039215686274509803921568627451
 }
@@ -228,16 +227,14 @@ pub fn packSnorm4x8(v: Vec4) -> u32 {
 #[allow(non_snake_case)]
 pub fn unpackSnorm4x8(p: u32) -> Vec4 {
     let unpack: &[i8; 4] = unsafe { mem::transmute(&p) };
-    let v =
-        vec4(
-            unpack[3] as f32,
-            unpack[2] as f32,
-            unpack[1] as f32,
-            unpack[0] as f32
-        );
+    let v = vec4(
+        unpack[3] as f32,
+        unpack[2] as f32,
+        unpack[1] as f32,
+        unpack[0] as f32,
+    );
     // v / 127.
     clamp_s(v * 0.0078740157480315, -1., 1.)
-
 }
 
 /// Returns a double-precision value obtained by packing the components of `v`

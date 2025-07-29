@@ -23,13 +23,12 @@
 
 // The GLSL Specification, ch 8.3, Common Functions.
 
-use basenum::*;
-use traits::*;
-use vec::traits::{ GenVec, GenFloatVec, GenNumVec };
-use vec::vec::{ Vector2, Vector3, Vector4 };
-use std::mem;
+use crate::basenum::*;
+use crate::traits::*;
+use crate::vec::traits::{GenFloatVec, GenNumVec, GenVec};
+use crate::vec::vec::{Vector2, Vector3, Vector4};
+use num::{Float, Zero};
 use std::ops::Rem;
-use num::{ Float, Zero };
 
 pub trait FloatIntRel<E: BaseFloat, I: BaseInt, GI: GenInt<I>>: GenFloat<E> {
     // float -> int
@@ -200,9 +199,7 @@ impl_vec_NumBoolRel! {
 /// ```
 #[inline(always)]
 pub fn abs<S: SignedNum + BaseNum, T: GenNum<S>>(x: T) -> T {
-    x.map(|s: S| {
-        SignedNum::abs(&s)
-    })
+    x.map(|s: S| SignedNum::abs(&s))
 }
 
 /// Returns `1.0` if `x > 0`, `0.0` if `x = 0`, or `–1.0` if `x < 0`.
@@ -217,9 +214,7 @@ pub fn abs<S: SignedNum + BaseNum, T: GenNum<S>>(x: T) -> T {
 /// ```
 #[inline(always)]
 pub fn sign<S: SignedNum + BaseNum, T: GenNum<S>>(x: T) -> T {
-    x.map(|s: S| {
-        SignedNum::sign(&s)
-    })
+    x.map(|s: S| SignedNum::sign(&s))
 }
 
 /// Returns a value equal to the nearest integer that is less than or
@@ -372,9 +367,7 @@ pub fn fmod<F: BaseFloat, T: GenFloat<F>>(x: T, y: T) -> T {
 /// ```
 #[inline(always)]
 pub fn mod_s<F: BaseFloat, T: GenFloatVec<F>>(x: T, y: F) -> T {
-    x.map(|f| -> F {
-        f.rem(y)
-    })
+    x.map(|f| -> F { f.rem(y) })
 }
 
 /// Returns the fractional and integer parts of `x`.
@@ -428,9 +421,7 @@ pub fn min<S: BaseNum, T: GenNum<S>>(x: T, y: T) -> T {
 /// ```
 #[inline(always)]
 pub fn min_s<S: BaseNum, T: GenNumVec<S>>(x: T, y: S) -> T {
-    x.map(|c| -> S {
-        BaseNum::min(c, y)
-    })
+    x.map(|c| -> S { BaseNum::min(c, y) })
 }
 
 /// Returns `y` if `x < y`, otherwise it returns `x`.
@@ -573,26 +564,12 @@ pub fn mix_s<F: BaseFloat, T: GenFloatVec<F>>(x: T, y: T, a: F) -> T {
 /// assert_eq!(mix_bool(1_f32, 2., false), 1.);
 /// ```
 #[inline(always)]
-pub fn mix_bool
-<
-F: BaseFloat,
-B: GenBType,
-T: NumBoolRel<F, B>
->(x: T, y: T, a: B) -> T {
+pub fn mix_bool<F: BaseFloat, B: GenBType, T: NumBoolRel<F, B>>(x: T, y: T, a: B) -> T {
     let ling = F::zero();
     x.zip_bool(&a, |f, b| -> F {
-        if b {
-            ling
-        } else {
-            f
-        }
-    }) +
-    y.zip_bool(&a, |f, b| -> F {
-        if b {
-            f
-        } else {
-            ling
-        }
+        if b { ling } else { f }
+    }) + y.zip_bool(&a, |f, b| -> F {
+        if b { f } else { ling }
     })
 }
 
@@ -608,11 +585,7 @@ T: NumBoolRel<F, B>
 #[inline(always)]
 pub fn step<F: BaseFloat, T: GenFloat<F>>(edge: T, x: T) -> T {
     x.zip(edge, |f, e| -> F {
-        if f < e {
-            F::zero()
-        } else {
-            F::one()
-        }
+        if f < e { F::zero() } else { F::one() }
     })
 }
 
@@ -632,11 +605,7 @@ pub fn step<F: BaseFloat, T: GenFloat<F>>(edge: T, x: T) -> T {
 #[inline(always)]
 pub fn step_s<F: BaseFloat, T: GenFloatVec<F>>(edge: F, x: T) -> T {
     x.map(|f| -> F {
-        if f < edge {
-            F::zero()
-        } else {
-            F::one()
-        }
+        if f < edge { F::zero() } else { F::one() }
     })
 }
 
@@ -676,11 +645,7 @@ pub fn smoothstep<F: BaseFloat, T: GenFloat<F>>(edge0: T, edge1: T, x: T) -> T {
 ///
 /// `smoothstep_s` is not a GLSL function name.
 #[inline]
-pub fn smoothstep_s
-<
-F: BaseFloat + GenNum<F>,
-T: GenFloatVec<F>
->(edge0: F, edge1: F, x: T) -> T {
+pub fn smoothstep_s<F: BaseFloat + GenNum<F>, T: GenFloatVec<F>>(edge0: F, edge1: F, x: T) -> T {
     let ling = F::zero();
     let yi = F::one();
     let er = yi + yi;
@@ -760,7 +725,7 @@ pub fn isinf<F: BaseFloat, B: GenBType, T: NumBoolRel<F, B>>(x: T) -> B {
 #[allow(non_snake_case)]
 pub fn floatBitsToInt<G: GenIType, T: FloatIntRel<f32, i32, G>>(value: T) -> G {
     value.map_int(|f| -> i32 {
-        let i: i32 = unsafe { mem::transmute(f) };
+        let i: i32 = f32::to_bits(f).cast_signed();
         i
     })
 }
@@ -791,7 +756,7 @@ pub fn floatBitsToInt<G: GenIType, T: FloatIntRel<f32, i32, G>>(value: T) -> G {
 #[allow(non_snake_case)]
 pub fn floatBitsToUint<G: GenUType, T: FloatIntRel<f32, u32, G>>(value: T) -> G {
     value.map_int(|f| -> u32 {
-        let u: u32 = unsafe { mem::transmute(f) };
+        let u: u32 = f32::to_bits(f);
         u
     })
 }
@@ -821,7 +786,7 @@ pub fn floatBitsToUint<G: GenUType, T: FloatIntRel<f32, u32, G>>(value: T) -> G 
 #[allow(non_snake_case)]
 pub fn intBitsToFloat<G: GenType, T: IntFloatRel<i32, f32, G>>(value: T) -> G {
     value.map_flt(|i| -> f32 {
-        let f: f32 = unsafe { mem::transmute(i) };
+        let f: f32 = f32::from_bits(i32::cast_unsigned(i));
         f
     })
 }
@@ -851,7 +816,7 @@ pub fn intBitsToFloat<G: GenType, T: IntFloatRel<i32, f32, G>>(value: T) -> G {
 #[allow(non_snake_case)]
 pub fn uintBitsToFloat<G: GenType, T: IntFloatRel<u32, f32, G>>(value: T) -> G {
     value.map_flt(|u| -> f32 {
-        let f: f32 = unsafe { mem::transmute(u) };
+        let f: f32 = f32::from_bits(u);
         f
     })
 }
@@ -901,12 +866,7 @@ pub fn fma<F: BaseFloat, T: GenFloat<F>>(a: T, b: T, c: T) -> T {
 /// assert_eq!((s, e), frexp(v3));
 /// ```
 #[inline(always)]
-pub fn frexp
-<
-F: BaseFloat,
-I: GenIType,
-T: FloatIntRel<F, i32, I>
->(x: T) -> (T, I) {
+pub fn frexp<F: BaseFloat, I: GenIType, T: FloatIntRel<F, i32, I>>(x: T) -> (T, I) {
     x.split_int(|f| -> (F, i32) {
         let (s, e) = BaseFloat::frexp(f);
         (s, e as i32)
@@ -931,13 +891,6 @@ T: FloatIntRel<F, i32, I>
 /// assert_eq!(ldexp(vf, vi), vec3(0.5, 4., 12.));
 /// ```
 #[inline(always)]
-pub fn ldexp
-<
-F: BaseFloat,
-G: GenFloat<F>,
-T: IntFloatRel<i32, F, G>
->(x: G, exp: T) -> G {
-    exp.zip_flt(&x, |i, f| -> F {
-        BaseFloat::ldexp(f, i as isize)
-    })
+pub fn ldexp<F: BaseFloat, G: GenFloat<F>, T: IntFloatRel<i32, F, G>>(x: G, exp: T) -> G {
+    exp.zip_flt(&x, |i, f| -> F { BaseFloat::ldexp(f, i as isize) })
 }

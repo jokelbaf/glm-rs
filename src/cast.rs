@@ -21,16 +21,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-use basenum::Primitive;
-use vec::traits::GenVec;
-use vec::vec::*;
+use crate::basenum::Primitive;
+use crate::vec::traits::GenVec;
+use crate::vec::vec::*;
+use num::{ToPrimitive, Zero};
 use std::default::Default;
-use num::{ ToPrimitive, Zero };
 
 /// This trait is like the `std::num::ToPrimitive`, but function `to_bool()`
 /// is added.
 pub trait ToPrim: Primitive {
-
     fn to_i32(&self) -> Option<i32>;
 
     fn to_u32(&self) -> Option<u32>;
@@ -103,7 +102,6 @@ impl ToPrim for bool {
 
 /// This trait provides parameterized function `from`.
 pub trait PrimCast: ToPrim {
-
     /// Converts from a value with primitive type `p`.
     fn from<F: ToPrim>(p: F) -> Option<Self>;
 }
@@ -230,13 +228,9 @@ def_cast_scalar_fun! {
 }
 
 /// Traits for converting any scalar/vector values to a vector.
-pub trait ToVector
-<
-F: PrimCast,
-T: PrimCast,
-GT: GenPrimitive<BaseType = T> + GenVec<T>
->: GenPrimitive<BaseType = F> {
-
+pub trait ToVector<F: PrimCast, T: PrimCast, GT: GenPrimitive<BaseType = T> + GenVec<T>>:
+    GenPrimitive<BaseType = F>
+{
     /// Convertes _self_ to a value of Vector type.
     ///
     /// # Example
@@ -342,7 +336,6 @@ def_cast_vector_fun! {
 #[cfg(test)]
 mod test {
 
-    use vec::vec::*;
     use super::*;
 
     #[test]

@@ -22,8 +22,8 @@
 // THE SOFTWARE.
 // The GLSL Specification, ch 8.2, Exponential Functions.
 
-use basenum::BaseFloat;
-use traits::GenFloat;
+use crate::basenum::BaseFloat;
+use crate::traits::GenFloat;
 use num::Float;
 
 /// Returns `x` raised to the `y` power, i.e., *x<sup>y</sup>*.
@@ -141,7 +141,5 @@ pub fn sqrt<F: BaseFloat, T: GenFloat<F>>(x: T) -> T {
 /// ```
 #[inline(always)]
 pub fn inversesqrt<F: BaseFloat, T: GenFloat<F>>(x: T) -> T {
-    x.map(|f| -> F {
-        f.sqrt().recip()
-    })
+    x.map(|f| -> F { f.sqrt().recip() })
 }

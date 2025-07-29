@@ -26,11 +26,11 @@
 // NOTE:
 // - `ftransform` is not implemented.
 
-use basenum::BaseFloat;
-use traits::GenFloat;
-use vec::traits::GenFloatVec;
-use vec::vec::Vector3;
 use super::exp::inversesqrt;
+use crate::basenum::BaseFloat;
+use crate::traits::GenFloat;
+use crate::vec::traits::GenFloatVec;
+use crate::vec::vec::Vector3;
 
 /// Returns the dot product of `x` and `y`, i.e.,
 /// `x[0] * y[0] + x[1] * y[1] + ...`.
@@ -96,11 +96,7 @@ pub fn distance<S: BaseFloat, T: GenFloatVec<S>>(p0: T, p1: T) -> S {
 #[allow(non_snake_case)]
 pub fn faceforward<S: BaseFloat, T: GenFloatVec<S>>(N: T, I: T, Nref: T) -> T {
     let ling = S::zero();
-    if dot(Nref, I) < ling {
-        N
-    } else {
-        -N
-    }
+    if dot(Nref, I) < ling { N } else { -N }
 }
 
 /// For the incident vector *I* and surface orientation *N*,
@@ -160,6 +156,6 @@ pub fn cross<F: BaseFloat>(x: Vector3<F>, y: Vector3<F>) -> Vector3<F> {
     Vector3::new(
         x.y * y.z - y.y * x.z,
         x.z * y.x - y.z * x.x,
-        x.x * y.y - y.x * x.y
+        x.x * y.y - y.x * x.y,
     )
 }

@@ -32,45 +32,21 @@
 //!   is used.
 //! - The parameters of matrix related functions are passed by reference.
 
-pub use self::trig::*;
-pub use self::exp::*;
 pub use self::common::*;
+pub use self::consts::{
+    Consts, e, epsilon, euler, four_over_pi, golden_ratio, half_pi, ln_ln_two, ln_ten, ln_two,
+    one_over_pi, one_over_root_two, one_over_tau, one_third, one_third_pi, pi, quarter_pi,
+    root_five, root_half_pi, root_ln_four, root_pi, root_tau, root_three, root_two, tau,
+    two_over_pi, two_over_root_pi, two_thirds,
+};
+pub use self::exp::*;
 pub use self::geom::*;
 pub use self::matrix::*;
-pub use self::consts::{
-    Consts,
-    epsilon,
-    pi,
-    tau,
-    root_pi,
-    half_pi,
-    one_third_pi,
-    quarter_pi,
-    one_over_pi,
-    one_over_tau,
-    two_over_pi,
-    four_over_pi,
-    two_over_root_pi,
-    one_over_root_two,
-    root_half_pi,
-    root_tau,
-    root_ln_four,
-    e,
-    euler,
-    root_two,
-    root_three,
-    root_five,
-    ln_two,
-    ln_ten,
-    ln_ln_two,
-    one_third,
-    two_thirds,
-    golden_ratio
-};
+pub use self::trig::*;
 
-mod trig;
-mod exp;
 mod common;
+pub mod consts;
+mod exp;
 mod geom;
 mod matrix;
-pub mod consts;
+mod trig;
